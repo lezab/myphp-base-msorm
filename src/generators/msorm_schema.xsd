@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+	<xsd:element name="database">
+		<xsd:complexType>
+			 <xsd:sequence>
+			 	<xsd:element name="table" minOccurs="1" maxOccurs="unbounded" type="tableType" />
+			 </xsd:sequence>
+			 
+		   	<xsd:attribute name="name" type="database_name" />
+		   	<xsd:attribute name="host" type="xsd:anyURI" />
+		   	<xsd:attribute name="port" type="int_or_empty" />
+		   	<xsd:attribute name="user" type="xsd:normalizedString" />
+		   	<xsd:attribute name="password" type="xsd:normalizedString" />
+		   	<xsd:attribute name="phpNamespace" type="xsd:token" />
+		</xsd:complexType>
+	 </xsd:element>
+	
+	
+	
+	<xsd:complexType name="tableType">
+ 		<xsd:sequence>
+ 			<xsd:element name="column" minOccurs="1" maxOccurs="unbounded" type="columnType" />
+ 			<xsd:element name="uniques" minOccurs="0" maxOccurs="unbounded" type="uniquesType" />
+ 		</xsd:sequence>
+ 		<xsd:attribute name="name" type="table_name" use="required"/>
+		<xsd:attribute name="phpObjectName" type="xsd:token"/>
+		<xsd:attribute name="phpObjectPFName" type="xsd:token"/>
+ 		<xsd:attribute name="phpManagerName" type="xsd:token"/>
+ 		<xsd:attribute name="isCrossRef" type="xsd:boolean"/>
+		<xsd:attribute name="phpExtraAttributesPrefix" type="xsd:token"/>
+ 	</xsd:complexType>
+ 	 
+	<xsd:complexType name="columnType">
+		<xsd:sequence>
+ 			<xsd:element name="reference" minOccurs="0" maxOccurs="1" type="referenceType" />
+ 		</xsd:sequence>	
+		<xsd:attribute name="name" type="column_name" use="required"/>
+		<xsd:attribute name="type" type="column_type" use="required"/>
+		<xsd:attribute name="primaryKey" type="xsd:boolean"/>
+		<xsd:attribute name="autoIncrement" type="xsd:boolean"/>
+		<xsd:attribute name="size" type="xsd:positiveInteger"/>
+		<xsd:attribute name="required" type="xsd:boolean"/>
+		<xsd:attribute name="unique" type="xsd:boolean"/>
+		<xsd:attribute name="values" type="xsd:string"/>
+		<xsd:attribute name="unsigned" type="xsd:boolean"/>
+		<xsd:attribute name="default" type="xsd:string"/>
+	</xsd:complexType>
+	
+	<xsd:complexType name="uniquesType">
+		<xsd:attribute name="columns" type="uniques_columns" use="required"/>
+	</xsd:complexType> 
+
+
+	<xsd:complexType name="referenceType">
+	  <xsd:attribute name="table" type="table_name" use="required"/>
+	  <xsd:attribute name="column" type="column_name" use="required"/>
+	  <xsd:attribute name="deleteCascade" type="xsd:boolean"/>
+	  <xsd:attribute name="phpAttributeName" type="xsd:token"/>
+	  <xsd:attribute name="phpRefAttributeName" type="xsd:token"/>
+	  <xsd:attribute name="phpRefAttributePFName" type="xsd:token"/>
+	</xsd:complexType>
+	
+
+	<xsd:simpleType name="empty">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value=""/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+    <xsd:simpleType name="database_name">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[\w_-]*"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="table_name">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[\w_]+"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="column_name">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[\w_]+"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="uniques_columns">
+        <xsd:restriction base="xsd:string">
+            <xsd:pattern value="[\w_,]+"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    <xsd:simpleType name="column_type">
+        <xsd:restriction base="xsd:string">
+            <xsd:enumeration value="tinyint"/>
+            <xsd:enumeration value="smallint"/>
+            <xsd:enumeration value="integer"/>
+            <xsd:enumeration value="int"/>
+            <xsd:enumeration value="bigint"/>
+            <xsd:enumeration value="float"/>
+            <xsd:enumeration value="real"/>
+            <xsd:enumeration value="decimal"/>
+            <xsd:enumeration value="double"/>
+            <xsd:enumeration value="char"/>
+            <xsd:enumeration value="varchar"/>
+            <xsd:enumeration value="text"/>
+            <xsd:enumeration value="date"/>
+            <xsd:enumeration value="time"/>
+            <xsd:enumeration value="datetime"/>
+            <xsd:enumeration value="boolean"/>
+            <xsd:enumeration value="bool"/>
+            <xsd:enumeration value="enum"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+	
+	<xsd:simpleType name="int_or_empty">
+		<xsd:union memberTypes="xsd:positiveInteger empty"/>
+	</xsd:simpleType>
+</xsd:schema>

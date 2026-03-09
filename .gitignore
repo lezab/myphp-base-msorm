@@ -1,0 +1,4 @@
+generators/model/*_generator.php
+projects/*
+!projects/sample/*
+tests/

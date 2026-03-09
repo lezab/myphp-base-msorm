@@ -1,0 +1,32 @@
+<?php
+fwrite($file, "<?php\n");
+fwrite($file, "namespace $nsp"."core;\n");
+fwrite($file, "\n");
+fwrite($file, "use \\$nsp"."exceptions\\DatabaseConnectionProviderException;\n");
+fwrite($file, "\n");
+fwrite($file, "class DatabaseConnectionProvider {\n");
+fwrite($file, "	\n");
+fwrite($file, "	protected static \$pdo;\n");
+fwrite($file, "	\n");
+fwrite($file, "	/**\n");
+fwrite($file, "	 * @throws DatabaseConnectionProviderException\n");
+fwrite($file, "	 * @return \\PDO\n");
+fwrite($file, "	 */\n");
+fwrite($file, "	public static function getInstance(){\n");
+fwrite($file, "		if (!isset(self::\$pdo)){\n");
+fwrite($file, "			\n");
+fwrite($file, "			include(__DIR__.\"/__db_params.conf.php\");\n");
+fwrite($file, "			\n");
+fwrite($file, "			try {\n");
+fwrite($file, "				self::\$pdo = new \\PDO(\"mysql:host=\$db_url;port=\$db_port;dbname=\$db_name\", \$db_user, \$db_password, array( \\PDO::ATTR_PERSISTENT => true, \\PDO::ATTR_ERRMODE => \\PDO::ERRMODE_EXCEPTION));\n");
+fwrite($file, "				self::\$pdo->query(\"SET NAMES 'UTF8'\");\n");
+fwrite($file, "			}\n");
+fwrite($file, "			catch (\\PDOException \$e) {\n");
+fwrite($file, "				throw new DatabaseConnectionProviderException(\$e);\n");
+fwrite($file, "			}\n");
+fwrite($file, "		}\n");
+fwrite($file, "     	return self::\$pdo;\n");
+fwrite($file, "	}\n");
+fwrite($file, "}\n");
+fwrite($file, "?>");
+?>

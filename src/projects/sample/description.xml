@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database name="bookstore" phpNamespace="bookstore">
+	
+	<table name="books" phpObjectName="Book">
+		<column name="id" type="integer" unsigned="true" autoIncrement="true" primaryKey="true" />
+		<column name="title" type="varchar" size="256" required="true" />
+	</table>
+	
+	<table name="publishers" phpObjectName="Publisher">
+		<column name="id" type="integer" primaryKey="true" unsigned="true" autoIncrement="true" />
+		<column name="name" type="varchar" size="128" required="true" />
+	</table>
+	
+	<table name="publications" phpObjectName="Publication" > <!-- Ne peut pas être une crossref table parce que le même editeur peut editer plusieurs fois le même livre avec des isbn différents -->
+		<column name="isbn" type="varchar" size="20" primaryKey="true" />
+		<column name="book_id" type="integer" unsigned="true" required="true">  <!-- Many to One : Une publication ne concerne qu'un seul livre. Un livre peut avoir plusieurs publications (plusieurs publications peuvent concerner le même livre -->
+			<reference table="books" column="id" deleteCascade="true" />
+		</column>
+		<column name="publisher_id" type="integer" unsigned="true" required="true"> <!-- Many to One : Une publication ne concerne qu'un seul editeur. Un éditeur peut avoir plusieurs publications -->
+			<reference table="publishers" column="id" deleteCascade="true" />
+		</column>
+		<column name="publication_date" type="date" />
+		<column name="publication_notes" type="varchar" size="200" />
+	</table>
+	
+	
+	<table name="contributors" phpObjectName="Contributor" >
+		<column name="id" type="integer" unsigned="true" autoIncrement="true" primaryKey="true" />
+		<column name="gender" type="enum" values="man,woman" />
+		<column name="first_name" type="varchar" size="128" required="true" />
+		<column name="last_name" type="varchar" size="128" required="true" />
+	</table>
+	
+	<table name="contribution_types" phpObjectName="ContributionType" >
+		<column name="id" type="integer" primaryKey="true" unsigned="true" autoIncrement="true" />
+		<column name="name" type="varchar" size="128" required="true" />
+		<column name="description" type="varchar" size="256" />
+	</table>
+	
+	<table name="contributions" phpObjectName="Contribution"> <!-- Ne peut pas être une crossref table parce que le même contributeur peut contribuer plusieurs fois au même livre avec des types de contributions différents (voir plus bas) -->
+		<column name="book_id" type="integer" unsigned="true" primaryKey="true"> <!-- Many to One : On peut avoir plusieurs contributions à un même livre. -->
+			<reference table="books" column="id" />
+		</column>
+		<column name="contributor_id" type="integer" unsigned="true" primaryKey="true"> <!-- Many to One : Un contributeur peut contribuer à plusieurs livres. -->
+			<reference table="contributors" column="id" />
+		</column>
+		<column name="contribution_type_id" type="integer" unsigned="true" primaryKey="true"> <!-- Est clé primaire pour pouvoir enregistrer plusieurs contributions d'un même contributeur au même ouvrage. -->
+			<reference table="contribution_types" column="id" />
+		</column>
+	</table>
+	
+	
+	<table name="covers" phpObjectName="Cover">
+		<column name="isbn" type="varchar" size="20" primaryKey="true"> <!-- One to One : Une publication n'a qu'une et une seule couverture. Ici filename aurait pu être ajouté à publication, mais c'est pour l'exemple. -->
+			<reference table="publications" column="isbn" deleteCascade="true" />
+		</column>
+		<column name="filename" type="varchar" size="100" required="true" />
+	</table>
+	
+	
+	<table name="distributors" phpObjectName="Distributor">
+		<column name="id" type="integer" unsigned="true" autoIncrement="true" primaryKey="true" />
+		<column name="name" type="varchar" size="128" required="true" unique="true"/>
+		<column name="country" type="varchar" size="256" />
+		<column name="address" type="varchar" size="256" />
+		<column name="zipcode" type="varchar" size="256" />
+		<column name="city" type="varchar" size="256" />
+	</table>
+	
+	<table name="distributions" isCrossRef="true" phpExtraAttributesPrefix="distribution">  <!-- Many to Many -->
+		<column name="isbn"  type="varchar" size="20"  primaryKey="true">
+			<reference table="publications" column="isbn" deleteCascade="true" />
+		</column>
+		<column name="distributor_id"  type="integer" unsigned="true" primaryKey="true">
+			<reference table="distributors" column="id" deleteCascade="true" />
+		</column>
+		<column name="price" type="float" />
+	</table>
+	
+</database>
