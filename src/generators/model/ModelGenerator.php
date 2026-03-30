@@ -1,7 +1,7 @@
 <?php
 class ModelGenerator extends MGenerator{
 	
-	public $version = '8.0.3';
+	public $version = '8.0.4';
 	
 	public $model_directory;
 	public $model_core_directory;

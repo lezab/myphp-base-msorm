@@ -160,7 +160,7 @@ foreach($raw_db_model as $tablename => $datas){
 ##				\$result = \$stmt->execute(\$params);
 ##			}
 ##			if (strpos(\$query, 'SELECT') !== false) {
-##				return \$result->fetchAll(\PDO::FETCH_ASSOC);
+##				return \$stmt->fetchAll(\PDO::FETCH_ASSOC);
 ##			}
 ##			return \$result;
 ##		}
