@@ -6,9 +6,12 @@ abstract class MGenerator{
 	}
 	
 	protected static function compileTemplates($dir, $templates){
+		if(! file_exists(__DIR__."/$dir/files_generators/")){
+			mkdir($directory, 0755, true);
+		}
 		foreach($templates as $template){
-			$lines = file(__DIR__."/$dir/".$template."_template.php");
-			$h = fopen(__DIR__."/$dir/".$template."_generator.php", "w");
+			$lines = file(__DIR__."/$dir/files_templates/".$template."_template.php");
+			$h = fopen(__DIR__."/$dir/files_generators/".$template."_generator.php", "w");
 			if(! (strpos($lines[0], "<?php") === 0)){
 				fwrite($h, "<?php\n");
 			}

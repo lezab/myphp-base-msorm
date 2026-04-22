@@ -1,4 +1,5 @@
-generators/model/*_generator.php
-projects/*
-!projects/sample/*
+src/generators/model/files_generators/
+src/projects/*
+!src/projects/sample/*
 tests/
+update_bookstore_model.sh

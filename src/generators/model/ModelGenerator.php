@@ -1,7 +1,7 @@
 <?php
 class ModelGenerator extends MGenerator{
 	
-	public $version = '8.0.4';
+	public $version = '8.0.5';
 	
 	public $model_directory;
 	public $model_core_directory;
@@ -62,7 +62,7 @@ class ModelGenerator extends MGenerator{
 			while($entry = $core_dir->read()) {
 				if(is_file($this->model_directory."core/".$entry) && ($entry != "__db_params.conf.php")){
 					if(! unlink($this->model_directory."core/".$entry)){
-						echo "Fail to delete file ".$this->model_directory."exceptions/".$entry.PHP_EOL.PHP_EOL;
+						echo "Fail to delete file ".$this->model_directory."core/".$entry.PHP_EOL.PHP_EOL;
 						$success = false;
 					}
 				}
@@ -139,10 +139,10 @@ class ModelGenerator extends MGenerator{
 		/** DatabaseConnectionProvider            ****/
 		/** ******************************************/
 		$file = fopen($this->model_core_directory."DatabaseConnectionProvider.php", "w+");
-		include(__DIR__.'/connection_provider_generator.php');
+		include(__DIR__.'/files_generators/connection_provider_generator.php');
 		fclose($file);
 		$file = fopen($this->model_exceptions_directory."DatabaseConnectionProviderException.php", "w+");
-		include(__DIR__.'/connection_provider_exception_generator.php');
+		include(__DIR__.'/files_generators/connection_provider_exception_generator.php');
 		fclose($file);
 		
 		if((! $this->update) || (! file_exists($this->model_core_directory."__db_params.conf.php"))){
@@ -162,7 +162,7 @@ class ModelGenerator extends MGenerator{
 		/** MSORM object                          ****/
 		/** ******************************************/
 		$file = fopen($this->model_core_directory."MSORM.php", "w+");
-		include(__DIR__.'/msorm_object_generator.php');
+		include(__DIR__.'/files_generators/msorm_object_generator.php');
 		fclose($file);
 		
 		
@@ -173,16 +173,16 @@ class ModelGenerator extends MGenerator{
 		
 		// managercore
 		$file = fopen($this->model_core_directory."RawDatasManagerCore.php", "w+");
-		include(__DIR__.'/rawdatas_manager_core_generator.php');
+		include(__DIR__.'/files_generators/rawdatas_manager_core_generator.php');
 		fclose($file);
 		// exception
 		$file = fopen($this->model_exceptions_directory."RawDatasManagerException.php", "w+");
-		include(__DIR__.'/rawdatas_manager_exception_generator.php');
+		include(__DIR__.'/files_generators/rawdatas_manager_exception_generator.php');
 		fclose($file);
 		// manager
 		if((! $this->update) || (! file_exists($this->model_directory."RawDatasManager.php"))){
 			$file = fopen($this->model_directory."RawDatasManager.php", "w+");
-			include(__DIR__.'/rawdatas_manager_generator.php');
+			include(__DIR__.'/files_generators/rawdatas_manager_generator.php');
 			fclose($file);
 		}
 		
@@ -207,7 +207,7 @@ class ModelGenerator extends MGenerator{
 			$filename = $core_classname.".php";
 			echo "	generating : $filename".PHP_EOL;
 			$file = fopen($this->model_core_directory.$filename, "w+");
-			include(__DIR__.'/object_core_generator.php');
+			include(__DIR__.'/files_generators/object_core_generator.php');
 			fclose($file);
 			
 			/** ******************************************/
@@ -217,7 +217,7 @@ class ModelGenerator extends MGenerator{
 			$filename = $exception_classname.".php";
 			echo "	generating : $filename".PHP_EOL;
 			$file = fopen($this->model_exceptions_directory.$filename, "w+");
-			include(__DIR__.'/object_exception_generator.php');
+			include(__DIR__.'/files_generators/object_exception_generator.php');
 			fclose($file);
 			
 			
@@ -229,7 +229,7 @@ class ModelGenerator extends MGenerator{
 				// création du fichier
 				echo "	generating : $filename".PHP_EOL;
 				$file = fopen($this->model_directory.$filename, "w+");
-				include(__DIR__.'/object_generator.php');
+				include(__DIR__.'/files_generators/object_generator.php');
 				fclose($file);
 			}
 			
@@ -241,7 +241,7 @@ class ModelGenerator extends MGenerator{
 			$filename = $manager_core_classname.".php";
 			echo "	generating : $filename".PHP_EOL;
 			$file = fopen($this->model_core_directory.$filename, "w+");
-			include(__DIR__.'/manager_core_generator.php');
+			include(__DIR__.'/files_generators/manager_core_generator.php');
 			fclose($file);
 			
 			/** ******************************************/
@@ -251,7 +251,7 @@ class ModelGenerator extends MGenerator{
 			$filename = $manager_exception_classname.".php";
 			echo "	generating : $filename".PHP_EOL;
 			$file = fopen($this->model_exceptions_directory.$filename, "w+");
-			include(__DIR__.'/manager_exception_generator.php');
+			include(__DIR__.'/files_generators/manager_exception_generator.php');
 			fclose($file);
 			
 			
@@ -263,7 +263,7 @@ class ModelGenerator extends MGenerator{
 				// création du fichier
 				echo "	generating : $filename".PHP_EOL;
 				$file = fopen($this->model_directory.$filename, "w+");
-				include(__DIR__.'/manager_generator.php');
+				include(__DIR__.'/files_generators/manager_generator.php');
 				fclose($file);
 			}
 		}
